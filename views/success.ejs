@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= i18n.t('success.title') %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container success-page">
+        <div class="success-card">
+            <div class="success-icon">
+                <svg viewBox="0 0 24 24" width="64" height="64">
+                    <circle cx="12" cy="12" r="11" fill="#10b981"/>
+                    <path d="M7 13l3 3 7-7" stroke="#fff" stroke-width="2" fill="none"/>
+                </svg>
+            </div>
+            
+            <h1><%= i18n.t('success.title') %></h1>
+            <p class="success-message"><%= i18n.t('success.message') %></p>
+            
+            <div class="subscription-details">
+                <p><%= i18n.t('success.planType') %>: <%= planType === 'yearly' ? i18n.t('purchase.yearlyPlan') : i18n.t('purchase.monthlyPlan') %></p>
+                <p><%= i18n.t('success.nextBilling') %>: <%= nextBillingDate %></p>
+            </div>
+
+            <p class="return-text"><%= i18n.t('success.returnText') %></p>
+            
+            <button id="return-button" class="primary-button">
+                <%= i18n.t('success.returnButton') %>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // 注入扩展ID
+        window.EXTENSION_ID = '<%= extensionId %>';
+        
+        document.getElementById('return-button').addEventListener('click', () => {
+            // 尝试与扩展通信
+            if (window.EXTENSION_ID) {
+                chrome.runtime.sendMessage(window.EXTENSION_ID, {
+                    type: 'SUBSCRIPTION_ACTIVATED',
+                    data: {
+                        status: 'active',
+                        planType: '<%= planType %>',
+                        expiresAt: '<%= expiresAt %>'
+                    }
+                });
+            }
+            
+            // 关闭当前标签页
+            window.close();
+        });
+    </script>
+</body>
+</html>

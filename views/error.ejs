@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= i18n.t('error.title') %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container error-page">
+        <div class="error-card">
+            <div class="error-icon">
+                <svg viewBox="0 0 24 24" width="64" height="64">
+                    <circle cx="12" cy="12" r="11" fill="#ef4444"/>
+                    <path d="M8 8l8 8M8 16l8-8" stroke="#fff" stroke-width="2"/>
+                </svg>
+            </div>
+            
+            <h1><%= i18n.t('error.title') %></h1>
+            <p class="error-message"><%= message %></p>
+            
+            <button onclick="window.history.back()" class="secondary-button">
+                <%= i18n.t('error.tryAgain') %>
+            </button>
+            
+            <p class="support-text">
+                <%= i18n.t('error.contact') %>
+                <a href="mailto:support@yourdomain.com">support@yourdomain.com</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

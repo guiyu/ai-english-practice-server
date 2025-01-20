@@ -1,0 +1,44 @@
+{
+    "purchase": {
+      "title": "Upgrade to Pro - AI English Speaking Practice",
+      "upgradeTitle": "Upgrade to Pro",
+      "subtitle": "Unlock unlimited AI speaking practice",
+      "monthlyPlan": "Monthly Plan",
+      "yearlyPlan": "Yearly Plan",
+      "perMonth": "/month",
+      "perYear": "/year",
+      "popular": "MOST POPULAR",
+      "saveText": "Save ~17%",
+      "feature1": "✓ Unlimited Practice Sessions",
+      "feature2": "✓ AI Speech Analysis",
+      "feature3": "✓ Natural Voice Synthesis",
+      "feature4": "✓ Priority Support",
+      "yearlyBonus": "✓ Extended History Analytics",
+      "subscribe": "Subscribe Now",
+      "securePayment": "Secure payment processed by Stripe",
+      "guarantee": "30-day money-back guarantee. No questions asked.",
+      "processing": "Processing...",
+      "regularPrice": "Regular price",
+      "monthlyPrice": "$6.99",
+      "yearlyPrice": "$69.99",
+      "testimonials": {
+        "title": "What Our Users Say",
+        "1": {
+          "text": "My English speaking improved dramatically after using the Pro version.",
+          "author": "Sarah L."
+        }
+      }
+    },
+    "success": {
+      "title": "Thank You!",
+      "message": "Your subscription has been confirmed",
+      "returnText": "You can now return to the extension to enjoy all Pro features",
+      "returnButton": "Return to Extension"
+    },
+    "error": {
+      "title": "Oops!",
+      "message": "Something went wrong",
+      "tryAgain": "Try Again",
+      "contact": "If the problem persists, please contact support"
+    }
+  }

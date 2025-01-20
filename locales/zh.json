@@ -1,0 +1,44 @@
+{
+    "purchase": {
+      "title": "升级到专业版 - AI英语口语练习",
+      "upgradeTitle": "升级到专业版",
+      "subtitle": "解锁无限AI口语练习",
+      "monthlyPlan": "月付方案",
+      "yearlyPlan": "年付方案",
+      "perMonth": "/月",
+      "perYear": "/年",
+      "popular": "最受欢迎",
+      "saveText": "节省约17%",
+      "feature1": "✓ 无限练习次数",
+      "feature2": "✓ AI语音分析",
+      "feature3": "✓ 自然语音合成",
+      "feature4": "✓ 优先支持服务",
+      "yearlyBonus": "✓ 扩展历史分析",
+      "subscribe": "立即订阅",
+      "securePayment": "由Stripe提供安全支付",
+      "guarantee": "30天无条件退款保证",
+      "processing": "处理中...",
+      "regularPrice": "常规价格",
+      "monthlyPrice": "$6.99",
+      "yearlyPrice": "$69.99",
+      "testimonials": {
+        "title": "用户评价",
+        "1": {
+          "text": "使用专业版后，我的英语口语有了显著提升。",
+          "author": "李明"
+        }
+      }
+    },
+    "success": {
+      "title": "谢谢！",
+      "message": "您的订阅已确认",
+      "returnText": "现在您可以返回扩展程序享受所有专业版功能",
+      "returnButton": "返回扩展程序"
+    },
+    "error": {
+      "title": "抱歉！",
+      "message": "发生了一些错误",
+      "tryAgain": "重试",
+      "contact": "如果问题持续存在，请联系支持"
+    }
+  }

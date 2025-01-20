@@ -1,0 +1,117 @@
+:root {
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --secondary: #64748b;
+    --surface: #ffffff;
+    --background: #f8fafc;
+    --text: #0f172a;
+    --border: #e2e8f0;
+    --success: #10b981;
+    --error: #ef4444;
+}
+
+/* Base styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, system-ui, sans-serif;
+    background: var(--background);
+    color: var(--text);
+    line-height: 1.5;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Language switcher */
+.language-switcher {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.lang-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.lang-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+/* Pricing cards */
+.pricing-container {
+    text-align: center;
+    padding: 4rem 0;
+}
+
+.pricing-cards {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    margin: 3rem 0;
+}
+
+.pricing-card {
+    background: var(--surface);
+    border-radius: 16px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    position: relative;
+}
+
+.pricing-card.popular {
+    border: 2px solid var(--primary);
+    transform: scale(1.05);
+}
+
+.popular-badge {
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    background: var(--primary);
+    color: white;
+    padding: 0.25rem 1rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+/* Button styles */
+.purchase-btn {
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    border-radius: 8px;
+    background: var(--primary);
+    color: white;
+    font-size: 1.125rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.purchase-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+.purchase-btn.loading {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Additional styles... */
