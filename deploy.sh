@@ -20,6 +20,33 @@ print_error() {
     echo -e "\e[1;31m[ERROR] $1\e[0m"
 }
 
+print_warning() {
+    echo -e "\e[1;33m[WARNING] $1\e[0m"
+}
+
+# 检查依赖项
+check_dependencies() {
+    local deps=("curl" "wget" "git")
+    for dep in "${deps[@]}"; do
+        if ! command -v "$dep" &> /dev/null; then
+            print_info "Installing $dep..."
+            apt-get install -y "$dep"
+        fi
+    done
+}
+
+# 检查MongoDB状态
+check_mongodb() {
+    if ! systemctl is-active --quiet mongod; then
+        print_warning "MongoDB is not running. Attempting to start..."
+        systemctl start mongod || {
+            print_error "Failed to start MongoDB. Please check the logs:"
+            journalctl -u mongod
+            exit 1
+        }
+    fi
+}
+
 # 检查输入是IP还是域名
 is_ip() {
     if [[ $1 =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
@@ -29,7 +56,7 @@ is_ip() {
     fi
 }
 
-# 函数：从.env文件读取变量
+# 从.env文件读取变量
 load_env() {
     local env_file=$1
     if [[ ! -f "$env_file" ]]; then
@@ -58,6 +85,16 @@ load_env() {
     done
 }
 
+# 错误处理
+set -e
+trap 'print_error "An error occurred during deployment. Check the error message above."' ERR
+
+# 检查是否是root用户
+if [ "$EUID" -ne 0 ]; then 
+    print_error "Please run as root"
+    exit 1
+fi
+
 # 检查输入参数
 if [[ "$1" == "-e" ]]; then
     if [[ -z "$2" ]]; then
@@ -85,37 +122,17 @@ fi
 APP_DIR="/var/www/purchase"
 NGINX_CONF="/etc/nginx/sites-available/purchase"
 
-# 错误处理
-set -e
-trap 'print_error "An error occurred during deployment. Check the error message above."' ERR
-
-# 检查是否是root用户
-if [ "$EUID" -ne 0 ]; then 
-    print_error "Please run as root"
-    exit 1
-fi
-
-# 更新系统
+# 更新系统并安装依赖
 print_info "Updating system..."
 apt-get update
 apt-get upgrade -y
 
+# 检查基础依赖
+check_dependencies
+
 # 安装必要的软件
 print_info "Installing required packages..."
-apt-get install -y curl git nginx software-properties-common
-
-# 安装 MongoDB
-print_info "Installing MongoDB..."
-wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add -
-echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu $(lsb_release -cs)/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
-apt-get update
-apt-get install -y mongodb-org
-
-# 启动 MongoDB
-print_info "Starting MongoDB..."
-systemctl daemon-reload
-systemctl enable mongod
-systemctl start mongod
+apt-get install -y nginx software-properties-common gnupg
 
 # 如果是域名，则安装SSL相关包
 if ! is_ip "$IP_OR_DOMAIN"; then
@@ -124,12 +141,25 @@ fi
 
 # 安装Node.js
 print_info "Installing Node.js..."
-curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
-apt-get install -y nodejs
+if ! command -v node &> /dev/null; then
+    curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
+    apt-get install -y nodejs
+fi
 
 # 安装PM2
 print_info "Installing PM2..."
-npm install -g pm2
+if ! command -v pm2 &> /dev/null; then
+    npm install -g pm2
+fi
+
+# 安装MongoDB
+print_info "Installing MongoDB..."
+if ! command -v mongod &> /dev/null; then
+    wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | apt-key add -
+    echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu $(lsb_release -cs)/mongodb-org/6.0 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-6.0.list
+    apt-get update
+    apt-get install -y mongodb-org
+fi
 
 # 创建应用目录
 print_info "Creating application directory..."
@@ -138,8 +168,19 @@ cd $APP_DIR
 
 # 配置MongoDB
 print_info "Configuring MongoDB..."
-systemctl enable mongodb
-systemctl start mongodb
+systemctl daemon-reload
+systemctl enable mongod
+systemctl start mongod || {
+    print_error "Failed to start MongoDB. Checking service status..."
+    systemctl status mongod
+    exit 1
+}
+
+# 等待MongoDB启动
+sleep 5
+
+# 验证MongoDB运行状态
+check_mongodb
 
 # 创建.env文件
 print_info "Creating environment file..."
@@ -200,7 +241,7 @@ if ! is_ip "$IP_OR_DOMAIN"; then
     certbot --nginx -d $IP_OR_DOMAIN --non-interactive --agree-tos --email webmaster@$IP_OR_DOMAIN
 fi
 
-# 安装依赖
+# 安装项目依赖
 print_info "Installing Node.js dependencies..."
 cd $APP_DIR
 npm install --production
