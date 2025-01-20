@@ -1,46 +1,55 @@
 :root {
     --primary: #2563eb;
     --primary-hover: #1d4ed8;
-    --secondary: #64748b;
     --surface: #ffffff;
     --background: #f8fafc;
     --text: #0f172a;
+    --text-secondary: #64748b;
     --border: #e2e8f0;
     --success: #10b981;
     --error: #ef4444;
+    --warning: #f59e0b;
 }
 
-/* Base styles */
-body {
+* {
     margin: 0;
     padding: 0;
-    font-family: -apple-system, system-ui, sans-serif;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     background: var(--background);
     color: var(--text);
     line-height: 1.5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
+    max-width: 480px;
+    margin: 40px auto;
+    padding: 0 20px;
+    width: 100%;
 }
 
-/* Language switcher */
+/* 语言切换器 */
 .language-switcher {
     position: absolute;
-    top: 1rem;
-    right: 1rem;
+    top: 20px;
+    right: 20px;
     display: flex;
-    gap: 0.5rem;
+    gap: 8px;
 }
 
 .lang-btn {
-    padding: 0.5rem 1rem;
+    padding: 6px 12px;
     border: 1px solid var(--border);
     background: var(--surface);
     border-radius: 6px;
     cursor: pointer;
+    font-size: 14px;
     transition: all 0.2s;
 }
 
@@ -50,68 +59,273 @@ body {
     border-color: var(--primary);
 }
 
-/* Pricing cards */
-.pricing-container {
-    text-align: center;
-    padding: 4rem 0;
-}
-
-.pricing-cards {
-    display: flex;
-    gap: 2rem;
-    justify-content: center;
-    margin: 3rem 0;
-}
-
+/* 定价卡片 */
 .pricing-card {
     background: var(--surface);
-    border-radius: 16px;
-    padding: 2rem;
-    width: 100%;
-    max-width: 400px;
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-    position: relative;
-}
-
-.pricing-card.popular {
-    border: 2px solid var(--primary);
-    transform: scale(1.05);
-}
-
-.popular-badge {
-    position: absolute;
-    top: -12px;
-    right: -12px;
-    background: var(--primary);
-    color: white;
-    padding: 0.25rem 1rem;
     border-radius: 20px;
-    font-size: 0.875rem;
-    font-weight: 500;
+    padding: 32px;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1),
+                0 2px 4px -2px rgb(0 0 0 / 0.1);
+    text-align: center;
 }
 
-/* Button styles */
-.purchase-btn {
+.card-header h1 {
+    font-size: 2rem;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, var(--primary), #6366f1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    margin-bottom: 24px;
+}
+
+/* 价格样式 */
+.price {
+    margin: 32px 0;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 4px;
+}
+
+.amount {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.period {
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+}
+
+/* 优惠标签 */
+.offer-badge {
+    background: linear-gradient(135deg, #fef3c7, #fef9c3);
+    padding: 8px 16px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.badge {
+    color: var(--warning);
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.save {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+/* 功能列表 */
+.features {
+    list-style: none;
+    margin: 32px 0;
+    text-align: left;
+}
+
+.features li {
+    padding: 12px 0;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+.features li:last-child {
+    border-bottom: none;
+}
+
+/* 按钮样式 */
+.checkout-btn {
     width: 100%;
-    padding: 1rem;
+    padding: 16px;
     border: none;
-    border-radius: 8px;
+    border-radius: 12px;
     background: var(--primary);
     color: white;
     font-size: 1.125rem;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
+    margin: 24px 0;
 }
 
-.purchase-btn:hover {
+.checkout-btn:hover {
     background: var(--primary-hover);
     transform: translateY(-1px);
 }
 
-.purchase-btn.loading {
+.checkout-btn:disabled {
     opacity: 0.7;
     cursor: not-allowed;
 }
 
-/* Additional styles... */
+/* 保证和支付信息 */
+.guarantee {
+    margin: 24px 0;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 0.875rem;
+}
+
+.payment-info {
+    margin-top: 32px;
+    text-align: center;
+}
+
+.secure {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    margin-bottom: 16px;
+}
+
+.cards img {
+    max-width: 240px;
+    height: auto;
+}
+
+/* 评价部分 */
+.testimonials {
+    margin-top: 40px;
+}
+
+.testimonial {
+    background: var(--surface);
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgb(0 0 0 / 0.05);
+}
+
+.stars {
+    color: var(--warning);
+    margin-bottom: 16px;
+}
+
+.quote {
+    font-style: italic;
+    color: var(--text);
+    margin-bottom: 16px;
+}
+
+.author {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+/* 成功页面样式 */
+.success-card {
+    text-align: center;
+    padding: 40px;
+}
+
+.success-icon {
+    width: 64px;
+    height: 64px;
+    background: var(--success);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    margin: 0 auto 24px;
+}
+
+.subscription-details {
+    margin: 32px 0;
+    text-align: left;
+}
+
+.subscription-details h2 {
+    margin-bottom: 16px;
+    color: var(--success);
+}
+
+.subscription-details ul {
+    list-style: none;
+}
+
+.subscription-details li {
+    padding: 8px 0;
+    color: var(--text-secondary);
+}
+
+.primary-button {
+    padding: 12px 24px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.primary-button:hover {
+    background: var(--primary-hover);
+}
+
+/* 取消页面样式 */
+.cancel-card {
+    text-align: center;
+    padding: 40px;
+}
+
+.cancel-icon {
+    width: 64px;
+    height: 64px;
+    background: var(--error);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    margin: 0 auto 24px;
+}
+
+.actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin: 32px 0;
+}
+
+.secondary-button {
+    padding: 12px 24px;
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.secondary-button:hover {
+    background: var(--background);
+}
+
+.support-info {
+    margin-top: 24px;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}

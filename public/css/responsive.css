@@ -1,0 +1,84 @@
+/* 响应式设计 */
+@media (max-width: 640px) {
+    .container {
+        margin: 20px auto;
+        padding: 0 16px;
+    }
+
+    .pricing-card {
+        padding: 24px;
+    }
+
+    .card-header h1 {
+        font-size: 1.75rem;
+    }
+
+    .subtitle {
+        font-size: 1rem;
+    }
+
+    .amount {
+        font-size: 3rem;
+    }
+
+    .features li {
+        padding: 10px 0;
+    }
+
+    .checkout-btn {
+        padding: 14px;
+    }
+
+    .language-switcher {
+        top: 16px;
+        right: 16px;
+    }
+
+    .success-card,
+    .cancel-card {
+        padding: 24px;
+    }
+
+    .actions {
+        flex-direction: column;
+    }
+
+    .secondary-button,
+    .primary-button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .offer-badge {
+        flex-direction: column;
+        padding: 12px;
+    }
+
+    .cards img {
+        max-width: 200px;
+    }
+}
+
+/* 暗色模式支持 */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --surface: #1e293b;
+        --background: #0f172a;
+        --text: #f8fafc;
+        --text-secondary: #94a3b8;
+        --border: #334155;
+    }
+
+    .lang-btn {
+        background: var(--background);
+    }
+
+    .offer-badge {
+        background: linear-gradient(135deg, #422006, #451a03);
+    }
+
+    .testimonial {
+        background: var(--surface);
+    }
+}
