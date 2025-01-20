@@ -559,11 +559,25 @@ print_info "Setting file permissions..."
 chown -R www-data:www-data $APP_DIR
 chmod -R 755 $APP_DIR
 
+# 更新并配置PM2
+print_info "Configuring PM2..."
+pm2 update
+
+# 检查是否已存在purchase-server进程
+if pm2 list | grep -q "purchase-server"; then
+    print_info "Stopping existing purchase-server process..."
+    pm2 delete purchase-server
+fi
+
 # 启动应用
 print_info "Starting application with PM2..."
-pm2 start app.js --name "purchase-server"
+pm2 start app.js --name "purchase-server" -f
 pm2 save
 pm2 startup
+
+# 等待进程启动
+sleep 3
+pm2 list
 
 # 如果是域名，则配置自动更新SSL证书
 if ! is_ip "$IP_OR_DOMAIN"; then
