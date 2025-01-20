@@ -2,9 +2,77 @@
 
 # deploy.sh
 # 部署AI英语口语练习Pro版购买页面
-# 使用方法: ./deploy.sh <ip_or_domain> <stripe_secret_key> <stripe_publishable_key> <stripe_webhook_secret> <extension_id>
+# 使用方法: 
+# 1. ./deploy.sh <ip_or_domain> <stripe_secret_key> <stripe_publishable_key> <stripe_webhook_secret> <extension_id>
+# 或者
+# 2. ./deploy.sh -e /path/to/.env
 
-# 检查参数
+# 函数：从.env文件读取变量
+load_env() {
+    local env_file=$1
+    if [[ ! -f "$env_file" ]]; then
+        print_error "ENV file not found: $env_file"
+        exit 1
+    }
+
+    # 读取并导出环境变量
+    while IFS='=' read -r key value; do
+        # 忽略注释和空行
+        if [[ $key =~ ^[^#] && ! -z "$key" ]]; then
+            # 去除值中的引号和空格
+            value=$(echo "$value" | tr -d '"' | tr -d "'")
+            # 导出变量
+            declare -g "$key=$value"
+        fi
+    done < "$env_file"
+
+    # 检查必需的变量
+    local required_vars=("IP_OR_DOMAIN" "STRIPE_SECRET_KEY" "STRIPE_PUBLISHABLE_KEY" "STRIPE_WEBHOOK_SECRET" "EXTENSION_ID")
+    for var in "${required_vars[@]}"; do
+        if [[ -z "${!var}" ]]; then
+            print_error "Required variable $var not found in $env_file"
+            exit 1
+        fi
+    done
+}
+
+# 彩色输出函数
+print_info() {
+    echo -e "\e[1;34m[INFO] $1\e[0m"
+}
+
+print_success() {
+    echo -e "\e[1;32m[SUCCESS] $1\e[0m"
+}
+
+print_error() {
+    echo -e "\e[1;31m[ERROR] $1\e[0m"
+}
+
+# 检查输入参数
+if [[ "$1" == "-e" ]]; then
+    if [[ -z "$2" ]]; then
+        print_error "Please provide the path to .env file"
+        echo "Usage: $0 -e /path/to/.env"
+        exit 1
+    fi
+    print_info "Loading configuration from $2"
+    load_env "$2"
+elif [[ "$#" -eq 5 ]]; then
+    IP_OR_DOMAIN=$1
+    STRIPE_SECRET_KEY=$2
+    STRIPE_PUBLISHABLE_KEY=$3
+    STRIPE_WEBHOOK_SECRET=$4
+    EXTENSION_ID=$5
+else
+    print_error "Invalid arguments"
+    echo "Usage: "
+    echo "  $0 <ip_or_domain> <stripe_secret_key> <stripe_publishable_key> <stripe_webhook_secret> <extension_id>"
+    echo "  or"
+    echo "  $0 -e /path/to/.env"
+    exit 1
+fi
+
 if [ "$#" -ne 5 ]; then
     echo "Usage: $0 <ip_or_domain> <stripe_secret_key> <stripe_publishable_key> <stripe_webhook_secret> <extension_id>"
     exit 1
