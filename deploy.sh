@@ -102,7 +102,20 @@ apt-get upgrade -y
 
 # 安装必要的软件
 print_info "Installing required packages..."
-apt-get install -y curl git nginx software-properties-common mongodb
+apt-get install -y curl git nginx software-properties-common
+
+# 安装 MongoDB
+print_info "Installing MongoDB..."
+wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add -
+echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu $(lsb_release -cs)/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
+apt-get update
+apt-get install -y mongodb-org
+
+# 启动 MongoDB
+print_info "Starting MongoDB..."
+systemctl daemon-reload
+systemctl enable mongod
+systemctl start mongod
 
 # 如果是域名，则安装SSL相关包
 if ! is_ip "$IP_OR_DOMAIN"; then
