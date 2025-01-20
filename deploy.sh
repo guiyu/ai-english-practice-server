@@ -7,13 +7,35 @@
 # 或者
 # 2. ./deploy.sh -e /path/to/.env
 
+# 输出彩色信息的函数
+print_info() {
+    echo -e "\e[1;34m[INFO] $1\e[0m"
+}
+
+print_success() {
+    echo -e "\e[1;32m[SUCCESS] $1\e[0m"
+}
+
+print_error() {
+    echo -e "\e[1;31m[ERROR] $1\e[0m"
+}
+
+# 检查输入是IP还是域名
+is_ip() {
+    if [[ $1 =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
 # 函数：从.env文件读取变量
 load_env() {
     local env_file=$1
     if [[ ! -f "$env_file" ]]; then
         print_error "ENV file not found: $env_file"
         exit 1
-    }
+    fi
 
     # 读取并导出环境变量
     while IFS='=' read -r key value; do
@@ -34,19 +56,6 @@ load_env() {
             exit 1
         fi
     done
-}
-
-# 彩色输出函数
-print_info() {
-    echo -e "\e[1;34m[INFO] $1\e[0m"
-}
-
-print_success() {
-    echo -e "\e[1;32m[SUCCESS] $1\e[0m"
-}
-
-print_error() {
-    echo -e "\e[1;31m[ERROR] $1\e[0m"
 }
 
 # 检查输入参数
@@ -73,40 +82,8 @@ else
     exit 1
 fi
 
-if [ "$#" -ne 5 ]; then
-    echo "Usage: $0 <ip_or_domain> <stripe_secret_key> <stripe_publishable_key> <stripe_webhook_secret> <extension_id>"
-    exit 1
-fi
-
-IP_OR_DOMAIN=$1
-STRIPE_SECRET_KEY=$2
-STRIPE_PUBLISHABLE_KEY=$3
-STRIPE_WEBHOOK_SECRET=$4
-EXTENSION_ID=$5
 APP_DIR="/var/www/purchase"
 NGINX_CONF="/etc/nginx/sites-available/purchase"
-
-# 检查输入是IP还是域名
-is_ip() {
-    if [[ $1 =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-        return 0
-    else
-        return 1
-    fi
-}
-
-# 输出彩色信息的函数
-print_info() {
-    echo -e "\e[1;34m[INFO] $1\e[0m"
-}
-
-print_success() {
-    echo -e "\e[1;32m[SUCCESS] $1\e[0m"
-}
-
-print_error() {
-    echo -e "\e[1;31m[ERROR] $1\e[0m"
-}
 
 # 错误处理
 set -e
