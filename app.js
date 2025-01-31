@@ -68,3 +68,22 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+
+app.post('/create-checkout-session', async (req, res) => {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: [{
+        price_data: {
+          currency: 'usd',
+          product_data: { name: 'AI English Pro' },
+          unit_amount: 699,
+        },
+        quantity: 1,
+      }],
+      mode: 'payment',
+      success_url: `${process.env.BASE_URL}/success.html`,
+      cancel_url: `${process.env.BASE_URL}/cancel.html`,
+    });
+  
+    res.json({ id: session.id });
+  });

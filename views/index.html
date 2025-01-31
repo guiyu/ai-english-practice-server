@@ -8,10 +8,10 @@
 </head>
 <body>
     <div class="container">
-        <nav class="nav">
-            <div class="lang-switcher">
-                <button class="lang-btn" data-lang="en">English</button>
-                <button class="lang-btn" data-lang="zh">中文</button>
+        <nav class="nav bg-gray-100 p-4">
+            <div class="lang-switcher flex justify-end space-x-2">
+              <button class="lang-btn px-4 py-2 rounded border" data-lang="en">English</button>
+              <button class="lang-btn px-4 py-2 rounded border" data-lang="zh">中文</button>
             </div>
         </nav>
 
@@ -20,42 +20,42 @@
             <p class="subtitle" data-i18n="upgradeSubtitle">Take your English speaking practice to the next level</p>
         </header>
 
-        <main class="pricing-section">
-            <div class="plan-card">
-                <div class="plan-header">
-                    <h2 data-i18n="proPlan">Pro Plan</h2>
-                    <div class="price">
-                        <span class="amount">$6.99</span>
-                        <span class="period" data-i18n="perMonth">/month</span>
-                    </div>
+        <!-- 增强版价格卡片布局 -->
+        <main class="pricing-section max-w-4xl mx-auto py-8">
+            <div class="grid md:grid-cols-2 gap-8">
+            <!-- 价格卡片 -->
+            <div class="plan-card bg-white p-8 rounded-xl shadow-lg border">
+                <div class="plan-header mb-6">
+                <h2 class="text-2xl font-bold" data-i18n="proplan">专业版</h2>
+                <div class="price text-4xl font-bold mt-4">
+                    <span class="amount">$6.99</span>
+                    <span class="period text-lg text-gray-600" data-i18n="permonth">/月</span>
                 </div>
-
-                <div class="features">
-                    <h3 data-i18n="featuresTitle">What's Included:</h3>
-                    <ul>
-                        <li data-i18n="feature1">Unlimited practice sessions</li>
-                        <li data-i18n="feature2">AI voice synthesis with natural pronunciation</li>
-                        <li data-i18n="feature3">Advanced speech analysis & feedback</li>
-                        <li data-i18n="feature4">Priority email support</li>
-                        <li data-i18n="feature5">New features added regularly</li>
-                    </ul>
                 </div>
-
-                <button id="checkout-button" class="checkout-btn" data-i18n="startNow">
-                    Start Now
+                
+                <!-- 功能列表 -->
+                <div class="features space-y-4 mb-8">
+                <ul class="space-y-3">
+                    <li class="flex items-center">✓ <span data-i18n="feature1">无限练习次数</span></li>
+                    <li class="flex items-center">✓ <span data-i18n="feature2">AI语音合成</span></li>
+                    <li class="flex items-center">✓ <span data-i18n="feature3">高级语音分析</span></li>
+                </ul>
+                </div>
+        
+                <!-- Stripe支付按钮 -->
+                <button id="checkout-button" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                <span data-i18n="subscribe">立即订阅</span>
                 </button>
             </div>
-
-            <div class="guarantee">
-                <img src="/images/guarantee.svg" alt="Money back guarantee" class="guarantee-icon">
-                <p data-i18n="guarantee">30-day money-back guarantee</p>
+        
+            <!-- 保障信息 -->
+            <div class="guarantee-box bg-blue-50 p-6 rounded-xl">
+                <div class="flex items-center mb-4">
+                <img src="/images/shield-check.svg" class="w-8 h-8 mr-2">
+                <span class="font-medium" data-i18n="guarantee">30天无忧退款</span>
+                </div>
+                <p class="text-gray-600" data-i18n="securepayment">通过Stripe安全支付</p>
             </div>
-
-            <div class="payment-info">
-                <img src="/images/payment-methods.png" alt="Payment methods" class="payment-methods">
-                <p class="secure-text" data-i18n="securePayment">
-                    Secure payment processed by Stripe
-                </p>
             </div>
         </main>
 

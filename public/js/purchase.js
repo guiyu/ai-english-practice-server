@@ -12,20 +12,29 @@ class PurchaseManager {
 
     setupEventListeners() {
         // 购买按钮点击事件
-        document.querySelectorAll('.purchase-btn').forEach(button => {
-            button.addEventListener('click', async (e) => {
-                const planType = e.target.dataset.planType;
-                await this.handlePurchase(planType, button);
-            });
-        });
-
-        // 语言切换
-        document.querySelectorAll('.lang-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const lang = btn.dataset.lang;
-                this.changeLanguage(lang);
-            });
-        });
+        document.getElementById('checkout-button').addEventListener('click', async () => {
+            try {
+              // 调用服务端创建Checkout Session
+              const response = await fetch('/create-checkout-session', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+              });
+              
+              const session = await response.json();
+              
+              // 跳转到Stripe支付页面
+              const result = await stripe.redirectToCheckout({
+                sessionId: session.id
+              });
+              
+              if (result.error) {
+                alert(result.error.message);
+              }
+            } catch (err) {
+              console.error('Payment error:', err);
+              alert('支付处理失败，请重试');
+            }
+          });
     }
 
     async handlePurchase(planType, button) {
