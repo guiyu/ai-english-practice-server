@@ -1,0 +1,63 @@
+name: CI/CD Pipeline for ChineseHelper
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 检出代码
+    - uses: actions/checkout@v3
+
+    # 设置Node.js环境
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x'
+        cache: 'npm'
+
+    # 安装依赖
+    - name: Install Dependencies
+      run: npm ci
+
+    # 代码风格检查
+    - name: Code Style Check
+      run: npm run lint
+
+    # 运行测试
+    - name: Run Tests
+      run: npm test
+
+    # 构建项目
+    - name: Build Project
+      run: npm run build
+
+    # 部署到服务器
+    - name: Deploy to Server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SERVER_SSH_KEY }}
+        script: |
+          cd /path/to/chinese-helper
+          git pull origin main
+          npm install
+          npm run build
+          pm2 restart chinese-helper
+
+    # 发送部署通知
+    - name: Send Deployment Notification
+      if: success()
+      uses: 8398a7/action-slack@v3
+      with:
+        status: ${{ job.status }}
+        text: 部署成功！ChineseHelper网站已更新
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
